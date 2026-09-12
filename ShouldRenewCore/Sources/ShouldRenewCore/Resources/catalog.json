@@ -1,0 +1,268 @@
+{
+  "templates": [
+    {
+      "key": "chatgpt_plus",
+      "name": "ChatGPT Plus",
+      "emoji": "🤖",
+      "defaultAmount": 20,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "writing",
+      "guideURL": "https://help.openai.com"
+    },
+    {
+      "key": "chatgpt_pro",
+      "name": "ChatGPT Pro",
+      "emoji": "🤖",
+      "defaultAmount": 200,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "writing",
+      "guideURL": "https://help.openai.com"
+    },
+    {
+      "key": "claude_pro",
+      "name": "Claude Pro",
+      "emoji": "🌟",
+      "defaultAmount": 20,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "writing",
+      "guideURL": "https://support.anthropic.com"
+    },
+    {
+      "key": "claude_max",
+      "name": "Claude Max",
+      "emoji": "🌟",
+      "defaultAmount": 100,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "coding",
+      "guideURL": "https://support.anthropic.com"
+    },
+    {
+      "key": "gemini_advanced",
+      "name": "Gemini Advanced",
+      "emoji": "✨",
+      "defaultAmount": 20,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "search",
+      "guideURL": "https://support.google.com/googleone"
+    },
+    {
+      "key": "grok",
+      "name": "Grok",
+      "emoji": "🛰️",
+      "defaultAmount": 30,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "search",
+      "guideURL": "https://help.x.com"
+    },
+    {
+      "key": "kimi",
+      "name": "Kimi 会员",
+      "emoji": "🐋",
+      "defaultAmount": 49,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "wechat",
+      "purpose": "writing",
+      "guideURL": "https://www.kimi.com"
+    },
+    {
+      "key": "qwen",
+      "name": "通义千问会员",
+      "emoji": "🦉",
+      "defaultAmount": 39,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "alipay",
+      "purpose": "writing",
+      "guideURL": "https://tongyi.aliyun.com"
+    },
+    {
+      "key": "wenxin",
+      "name": "文心一言会员",
+      "emoji": "🪶",
+      "defaultAmount": 60,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "wechat",
+      "purpose": "writing",
+      "guideURL": "https://yiyan.baidu.com"
+    },
+    {
+      "key": "doubao",
+      "name": "豆包会员",
+      "emoji": "🫘",
+      "defaultAmount": 69,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "wechat",
+      "purpose": "writing",
+      "guideURL": "https://www.doubao.com"
+    },
+    {
+      "key": "deepseek",
+      "name": "DeepSeek",
+      "emoji": "🐳",
+      "defaultAmount": 30,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "coding",
+      "guideURL": "https://platform.deepseek.com"
+    },
+    {
+      "key": "cursor_pro",
+      "name": "Cursor Pro",
+      "emoji": "⌨️",
+      "defaultAmount": 20,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "coding",
+      "guideURL": "https://cursor.com"
+    },
+    {
+      "key": "github_copilot",
+      "name": "GitHub Copilot",
+      "emoji": "🐙",
+      "defaultAmount": 10,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "coding",
+      "guideURL": "https://docs.github.com"
+    },
+    {
+      "key": "windsurf",
+      "name": "Windsurf Pro",
+      "emoji": "🏄",
+      "defaultAmount": 15,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "coding",
+      "guideURL": "https://windsurf.com"
+    },
+    {
+      "key": "perplexity_pro",
+      "name": "Perplexity Pro",
+      "emoji": "🔎",
+      "defaultAmount": 20,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "search",
+      "guideURL": "https://www.perplexity.ai/help-center"
+    },
+    {
+      "key": "metaso",
+      "name": "秘塔AI搜索",
+      "emoji": "🗼",
+      "defaultAmount": 49,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "alipay",
+      "purpose": "search",
+      "guideURL": "https://metaso.cn"
+    },
+    {
+      "key": "poe",
+      "name": "Poe",
+      "emoji": "💬",
+      "defaultAmount": 20,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "other",
+      "guideURL": "https://poe.com"
+    },
+    {
+      "key": "midjourney",
+      "name": "Midjourney",
+      "emoji": "🎨",
+      "defaultAmount": 10,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "image",
+      "guideURL": "https://docs.midjourney.com"
+    },
+    {
+      "key": "runway",
+      "name": "Runway",
+      "emoji": "🎬",
+      "defaultAmount": 15,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "video",
+      "guideURL": "https://runwayml.com"
+    },
+    {
+      "key": "jimeng",
+      "name": "即梦会员",
+      "emoji": "🌅",
+      "defaultAmount": 69,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "alipay",
+      "purpose": "image",
+      "guideURL": "https://jimeng.jianying.com"
+    },
+    {
+      "key": "kling",
+      "name": "可灵会员",
+      "emoji": "🎞️",
+      "defaultAmount": 66,
+      "currency": "CNY",
+      "cycle": "monthly",
+      "channel": "wechat",
+      "purpose": "video",
+      "guideURL": "https://www.klingai.com"
+    },
+    {
+      "key": "suno",
+      "name": "Suno",
+      "emoji": "🎵",
+      "defaultAmount": 10,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "other",
+      "guideURL": "https://suno.com"
+    },
+    {
+      "key": "elevenlabs",
+      "name": "ElevenLabs",
+      "emoji": "🔊",
+      "defaultAmount": 22,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "other",
+      "guideURL": "https://elevenlabs.io"
+    },
+    {
+      "key": "notion_ai",
+      "name": "Notion AI",
+      "emoji": "📓",
+      "defaultAmount": 10,
+      "currency": "USD",
+      "cycle": "monthly",
+      "channel": "official",
+      "purpose": "writing",
+      "guideURL": "https://www.notion.com/help"
+    }
+  ]
+}
