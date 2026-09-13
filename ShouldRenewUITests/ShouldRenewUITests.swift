@@ -3,7 +3,6 @@ import XCTest
 /// xuma-prd-for-ai.md 验收走查：
 /// A1 冷启动空态 → 目录添加 Claude Pro → 今日即将到期 + 清单生效中可见
 /// A7 Tab 只有 今日/清单/设置，无月报
-/// （决策卡窗口/续/取消的生命周期由核心单测覆盖）
 final class ShouldRenewUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -43,5 +42,44 @@ final class ShouldRenewUITests: XCTestCase {
         app.tabBars.buttons["清单"].tap()
         XCTAssertTrue(app.staticTexts["生效中"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Claude Pro"].firstMatch.waitForExistence(timeout: 5))
+    }
+}
+
+/// 录制产品演示视频：外部用 `simctl io recordVideo` 录主模拟器，
+/// 本测试负责真实驱动界面（-parallel-testing-enabled NO 时跑在主模拟器上）。
+/// 开头 sleep(12) 给录制脚本留启动时间，片头由后期裁剪。
+final class DemoRecordingUITests: XCTestCase {
+    func testRecordDemo() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["--uitest-fresh", "--uitest-demo"]
+        sleep(12)
+        app.launch()
+
+        sleep(2) // 空态停留
+        app.buttons["添加 AI 会员"].tap()
+        sleep(2) // 目录列表
+        let claudeRow = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Claude Pro'")).firstMatch
+        claudeRow.tap()
+        sleep(2) // 表单（名称/价格已带出）
+        app.buttons["保存"].tap()
+        sleep(3) // 决策卡出现
+
+        app.buttons["先取消"].firstMatch.tap()
+        sleep(3) // 取消指南 4 步
+        app.navigationBars.buttons.firstMatch.tap()
+        sleep(1) // 回到决策卡
+
+        app.buttons["续"].firstMatch.tap()
+        sleep(3) // 已标记续费 + 撤销，卡片消失
+
+        app.tabBars.buttons["清单"].tap()
+        sleep(3) // 已标记续费分区
+        app.staticTexts["Claude Pro"].firstMatch.tap()
+        sleep(2) // 编辑表单
+        app.navigationBars.buttons.firstMatch.tap()
+        sleep(1)
+
+        app.tabBars.buttons["设置"].tap()
+        sleep(3) // 设置页收尾
     }
 }

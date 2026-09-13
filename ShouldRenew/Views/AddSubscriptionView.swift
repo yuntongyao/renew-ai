@@ -88,6 +88,10 @@ struct AddSubscriptionView: View {
         if catalogItem.id == Catalog.customID {
             draftItem.currency = settings.defaultCurrency
         }
+        // 演示录制用：新订阅默认 3 天后扣款，决策卡立即可见
+        if ProcessInfo.processInfo.arguments.contains("--uitest-demo") {
+            draftItem.nextChargeAt = Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? draftItem.nextChargeAt
+        }
         draft = draftItem
         showForm = true
     }

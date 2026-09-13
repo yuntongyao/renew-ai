@@ -5,6 +5,13 @@
 
 ![hero](images/vibe-1-hero.png)
 
+## 演示视频
+
+![demo](demo.mp4)
+
+40 秒看完核心闭环：空态 → 目录添加 → 决策卡 → 先取消看指南 → 续 → 清单 → 设置。
+（`story/demo.mp4`，884×1920 竖版，可直接发布小红书；由 XCUITest 驱动真实界面 + `simctl recordVideo` 录制。）
+
 ## 一、做了个什么 App
 
 一句话：**到期前问一句，这笔 AI 会员还该不该续。**

@@ -8,7 +8,7 @@ public final class SubscriptionStore: ObservableObject {
     @Published public private(set) var items: [Subscription] = []
 
     /// 免费上限：统计 status != canceled 的条目
-    public static let freeLimit = 10
+    public nonisolated static let freeLimit = 10
 
     private let fileURL: URL
     private let calendar: Calendar
