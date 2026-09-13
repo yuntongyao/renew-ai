@@ -50,6 +50,10 @@ xcodebuild test -project ShouldRenew.xcodeproj -scheme ShouldRenew \
 
 数据仅存本机 `Documents/subscriptions.json`；旧版（v0.1）数据自动迁移（币种/周期/渠道/用途/状态逐项映射，用量与汇率字段按新需求丢弃）。
 
+## 故事与复盘
+
+- [3 天 13 次提交：Vibe Coding 全过程复盘（含避坑 6 条）](story/vibe-coding-story.md)
+
 ## 上架配置状态
 
 - `PrivacyInfo.xcprivacy`：无追踪、无收集数据、UserDefaults（CA92.1）

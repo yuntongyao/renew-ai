@@ -3,7 +3,7 @@
 > 这是一份真实的 Vibe Coding 复盘。项目叫「续吗」（ShouldRenew）——在 AI 订阅下次扣款前问你一句：还该不该续。
 > 从第一行代码到 App Store 上架清单，全部由人与 AI 结对完成，全程约 3 天，13 次提交，2658 行 Swift，0 行后端。
 
-![hero](story/images/vibe-1-hero.png)
+![hero](images/vibe-1-hero.png)
 
 ## 一、做了个什么 App
 
@@ -15,7 +15,7 @@
 - 决策三选一：续 / 先取消（附微信、支付宝、App Store、官网四渠道取消步骤）/ 再想 1 天
 - 纯本地：无账号、无网络、无后端，数据只存在手机里
 
-![numbers](story/images/vibe-3-numbers.png)
+![numbers](images/vibe-3-numbers.png)
 
 ## 二、过程复盘：三轮迭代
 
@@ -28,7 +28,7 @@
 **第三轮（D2～D3）：一份"实现型 PRD"推倒重来。**
 新版 PRD 明确写了 MUST / MUST NOT（不要饼图、不要金额大字报、不要月报 Tab）、逐字的文案表、逐项的验收用例。AI 据此整体重写做减法：砍掉月报、砍掉用量统计，只留决策闭环。之后是撤销/恢复路径、目录扩到 26 项、上架合规配置。
 
-![lessons](story/images/vibe-2-lessons.png)
+![lessons](images/vibe-2-lessons.png)
 
 ## 三、人机分工（这才是 Vibe Coding 的真相）
 
