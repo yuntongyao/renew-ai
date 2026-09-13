@@ -10,7 +10,7 @@ struct TodayView: View {
     @State private var detailItem: Subscription?
     @State private var showGuide = false
     @State private var guideItem: Subscription?
-    @State private var renewedToast = false
+    @State private var renewedItemID: UUID?
 
     var body: some View {
         NavigationStack {
@@ -26,21 +26,30 @@ struct TodayView: View {
                             onRenew: {
                                 store.markRenewed(decision.id)
                                 notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
-                                renewedToast = true
+                                renewedItemID = decision.id
                             },
                             onCancel: {
                                 guideItem = decision
                                 showGuide = true
                             }
                         )
-                        if renewedToast {
+                    } else {
+                        empty
+                    }
+
+                    if let renewedID = renewedItemID {
+                        HStack(spacing: 12) {
                             Text(Copy.Today.renewedToast)
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
-                                .transition(.opacity)
+                            Button(Copy.Today.undo) {
+                                store.markActive(renewedID)
+                                notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
+                                renewedItemID = nil
+                            }
+                            .font(.footnote.weight(.semibold))
                         }
-                    } else {
-                        empty
+                        .transition(.opacity)
                     }
 
                     upcomingSection

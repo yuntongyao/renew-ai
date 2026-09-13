@@ -72,9 +72,12 @@ struct DecisionDetailView: View {
                 )
 
                 if item.status == .decidedRenew {
-                    Label(Copy.Today.renewedToast, systemImage: "checkmark.circle")
-                        .font(.subheadline)
-                        .foregroundStyle(Xuma.teal)
+                    Button(Copy.Today.reactivate) {
+                        store.markActive(item.id)
+                        notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(Xuma.teal)
                 }
 
                 Button(Copy.Decision.snooze) {

@@ -83,6 +83,11 @@ struct ListView: View {
                                     notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
                                 }
                                 .tint(.red)
+                                Button(Copy.List.swipeReactivate) {
+                                    store.markActive(item.id)
+                                    notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
+                                }
+                                .tint(Xuma.teal)
                             }
                     }
                 }

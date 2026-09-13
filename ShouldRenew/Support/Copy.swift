@@ -22,6 +22,8 @@ enum Copy {
         static let upcomingHeader = "即将到期"
         static let renewedToast = "已标记续费"
         static let snoozedToast = "已推迟 1 天，明天再问。"
+        static let undo = "撤销"
+        static let reactivate = "改主意了？改回生效中"
 
         static func chargeIn(_ days: Int) -> String {
             days <= 0 ? "今天扣款" : "\(days) 天后扣款"
@@ -84,6 +86,7 @@ enum Copy {
         static let sectionCanceled = "已取消"
         static let empty = "还没有订阅，添加一个 AI 会员。"
         static let swipeCancel = "取消订阅"
+        static let swipeReactivate = "改回生效中"
         static let swipeDelete = "删除"
     }
 

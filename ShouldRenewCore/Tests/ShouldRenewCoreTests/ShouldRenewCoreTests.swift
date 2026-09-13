@@ -43,7 +43,8 @@ final class ShouldRenewCoreTests: XCTestCase {
     // MARK: - 目录（§3 MVP catalog，逐项一致）
 
     func testCatalogMatchesPRDTable() {
-        let expected: [(String, String, Decimal, Currency, Purpose, Channel)] = [
+        // PRD §3 原 10 项逐字保留
+        let prdItems: [(String, String, Decimal, Currency, Purpose, Channel)] = [
             ("chatgpt-plus", "ChatGPT Plus", 20, .usd, .chat, .website),
             ("claude-pro", "Claude Pro", 20, .usd, .chat, .website),
             ("cursor-pro", "Cursor Pro", 20, .usd, .coding, .website),
@@ -55,8 +56,7 @@ final class ShouldRenewCoreTests: XCTestCase {
             ("tongyi", "通义会员", 49, .cny, .chat, .alipay),
             ("custom", "自定义", 0, .usd, .other, .website),
         ]
-        XCTAssertEqual(Catalog.items.count, expected.count)
-        for (id, name, price, currency, purpose, channel) in expected {
+        for (id, name, price, currency, purpose, channel) in prdItems {
             let item = Catalog.item(id: id)
             XCTAssertNotNil(item, "缺少目录项 \(id)")
             XCTAssertEqual(item?.name, name)
@@ -66,6 +66,17 @@ final class ShouldRenewCoreTests: XCTestCase {
             XCTAssertEqual(item?.defaultChannel, channel)
             XCTAssertEqual(item?.cycle, .monthly)
         }
+
+        // 扩充的主流厂商套餐（覆盖去重 + 全部为 AI 工具）
+        let expectedNewIDs = ["chatgpt-pro", "claude-max", "grok", "poe", "doubao", "ernie", "zhipu",
+                              "windsurf-pro", "jetbrains-ai", "jimeng", "runway", "kling", "suno",
+                              "elevenlabs", "notion-ai", "metaso"]
+        for id in expectedNewIDs {
+            XCTAssertNotNil(Catalog.item(id: id), "缺少扩充目录项 \(id)")
+        }
+        let ids = Catalog.items.map(\.id)
+        XCTAssertEqual(ids.count, Set(ids).count, "目录 id 不得重复")
+        XCTAssertEqual(ids.last, "custom", "自定义固定在最后")
     }
 
     func testCustomDraftHasEmptyName() {
@@ -193,6 +204,24 @@ final class ShouldRenewCoreTests: XCTestCase {
         XCTAssertFalse(store.canAdd, "满 3 条不可再加")
         store.markCanceled(store.items[0].id)
         XCTAssertTrue(store.canAdd, "取消一条后腾出名额")
+    }
+
+    func testUndoRenewAndSnoozeReturnToActive() {
+        let store = makeStore()
+        let sub = item(charge: date(2026, 9, 20))
+        store.add(sub)
+
+        store.markRenewed(sub.id)
+        XCTAssertEqual(store.item(with: sub.id)?.status, .decidedRenew)
+        store.markActive(sub.id)
+        XCTAssertEqual(store.item(with: sub.id)?.status, .active, "撤销续费应回到 active")
+        XCTAssertEqual(store.upcomingDecision(now: date(2026, 9, 13))?.id, sub.id, "撤销后重新进决策卡")
+
+        store.markSnoozed(sub.id, now: date(2026, 9, 13, 15, 0))
+        store.markActive(sub.id)
+        let undone = store.item(with: sub.id)!
+        XCTAssertEqual(undone.status, .active)
+        XCTAssertNil(undone.snoozeUntil, "撤销 snooze 应清空 snoozeUntil")
     }
 
     func testSnoozeLifecycle() {

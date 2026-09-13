@@ -101,6 +101,14 @@ public final class SubscriptionStore: ObservableObject {
         mutate(id) { $0.status = .canceled }
     }
 
+    /// 反悔/撤销：decidedRenew 或 snoozed → active，重新进决策卡与提醒
+    public func markActive(_ id: UUID) {
+        mutate(id) {
+            $0.status = .active
+            $0.snoozeUntil = nil
+        }
+    }
+
     /// 再想 1 天 → snoozed，snoozeUntil = now + 1 天；到期由 refresh 转回 active
     public func markSnoozed(_ id: UUID, now: Date = Date()) {
         mutate(id) {
@@ -238,7 +246,7 @@ private struct LegacySubscription: Decodable {
         let catalogId: String
         if let key = templateKey {
             // 新目录里改了名的两项
-            let renamed = ["kimi": "kimi-member", "qwen": "tongyi"]
+            let renamed = ["kimi": "kimi-member", "qwen": "tongyi", "wenxin": "ernie", "windsurf": "windsurf-pro"]
             let mapped = renamed[key] ?? key.replacingOccurrences(of: "_", with: "-")
             catalogId = Catalog.item(id: mapped)?.id ?? Catalog.customID
         } else {
