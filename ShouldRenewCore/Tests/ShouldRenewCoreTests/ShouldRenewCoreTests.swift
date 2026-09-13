@@ -198,10 +198,11 @@ final class ShouldRenewCoreTests: XCTestCase {
 
     func testFreeCapCountsNonCanceledOnly() {
         let store = makeStore()
-        for i in 0..<3 {
+        XCTAssertEqual(SubscriptionStore.freeLimit, 10)
+        for i in 0..<SubscriptionStore.freeLimit {
             store.add(item(name: "S\(i)", charge: date(2026, 10, 1 + i)))
         }
-        XCTAssertFalse(store.canAdd, "满 3 条不可再加")
+        XCTAssertFalse(store.canAdd, "满 \(SubscriptionStore.freeLimit) 条不可再加")
         store.markCanceled(store.items[0].id)
         XCTAssertTrue(store.canAdd, "取消一条后腾出名额")
     }

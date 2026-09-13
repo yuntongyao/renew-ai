@@ -6,7 +6,7 @@
 
 ## 功能范围（只做决策闭环）
 
-- **添加**：26 个主流 AI 套餐目录（PRD 原 10 项 + 扩充：ChatGPT Pro、Claude Max、SuperGrok、Poe、豆包、文心、智谱清言、Windsurf、JetBrains AI、即梦、Runway、可灵、Suno、ElevenLabs、Notion AI、秘塔；价格仅占位可改），名称/价格/币种（usd|cny）/周期（月|年）/渠道（apple|wechat|alipay|website）/下次扣款日/用途；免费上限 3 条（不计已取消），超限弹禁用付费面板（不做 StoreKit）
+- **添加**：26 个主流 AI 套餐目录（PRD 原 10 项 + 扩充：ChatGPT Pro、Claude Max、SuperGrok、Poe、豆包、文心、智谱清言、Windsurf、JetBrains AI、即梦、Runway、可灵、Suno、ElevenLabs、Notion AI、秘塔；价格仅占位可改），名称/价格/币种（usd|cny）/周期（月|年）/渠道（apple|wechat|alipay|website）/下次扣款日/用途；免费上限 10 条（不计已取消），超限弹禁用付费面板（不做 StoreKit）
 - **今日**：决策卡只给 14 天内最近一笔（该不该续 / 价格行 / N 天后扣款 / 续 · 先取消）；无卡显示空态「最近没有要决定的」；「即将到期」最多 3 条；同用途重叠提示「{A} 和 {B} 都偏{X}，要不要只留一个？」
 - **动作**：续 → decidedRenew（扣款日过后自动滚动周期转回 active），点完可撤销（今日 toast「撤销」/详情页「改回生效中」/清单滑动「改回生效中」）；先取消 → 渠道指南（apple/wechat/alipay/website 各 4 步逐字文案）→「我已取消」或「还是续」；再想 1 天 → snoozed，次日转回（同样可撤销）
 - **清单**：生效中 → 已标记续费 → 已取消（默认折叠）；点按编辑，滑动取消/删除
