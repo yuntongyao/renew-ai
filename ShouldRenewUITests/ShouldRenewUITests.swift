@@ -50,5 +50,7 @@ final class ShouldRenewUITests: XCTestCase {
         app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["Claude Pro"].firstMatch.waitForExistence(timeout: 5),
                       "返回清单后记录仍应显示")
+        XCTAssertTrue(app.staticTexts["本月42次"].firstMatch.waitForExistence(timeout: 5),
+                      "清单卡片应显示已标次数")
     }
 }

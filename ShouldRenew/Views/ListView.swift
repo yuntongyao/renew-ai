@@ -107,9 +107,24 @@ struct ListView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                Text("\(item.amountText)/\(item.cycle.title) · \(item.channel.title)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 6) {
+                    Text("\(item.amountText)/\(item.cycle.title) · \(item.channel.title)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    if let usage = item.usageMark {
+                        // 已标次数：≤1 次橙色（对应月报「低使用」），其余灰色
+                        Text(usage == 0 ? Copy.List.usageNone : Copy.List.usageTimes(usage))
+                            .font(.caption2.weight(.semibold))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(
+                                usage <= 1 ? Color.orange.opacity(0.18) : Color.gray.opacity(0.15),
+                                in: Capsule()
+                            )
+                            .foregroundStyle(usage <= 1 ? Color.orange : .secondary)
+                    }
+                }
             }
             Spacer()
             Text(Copy.List.chargeIn(max(item.daysUntilCharge, 0)))

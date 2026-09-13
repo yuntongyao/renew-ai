@@ -40,6 +40,8 @@ enum Copy {
         static func chargeIn(_ days: Int) -> String {
             days <= 0 ? "今天扣" : "\(days)天后扣"
         }
+        static let usageNone = "没用过"
+        static func usageTimes(_ count: Int) -> String { "本月\(count)次" }
     }
 
     enum Add {
