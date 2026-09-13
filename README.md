@@ -20,10 +20,11 @@
 ```
 ShouldRenew.xcodeproj          iOS 17+ SwiftUI App（com.shouldrenew.app）
 ShouldRenew/                   App 壳
-  Assets.xcassets              App 图标（1024×1024，暖棕底「续」+ 问号徽标）
+  Assets.xcassets              App 图标（定稿：#2F5D56 底「续吗」ivory 字）
   Support/Copy.swift           全部中文文案集中于此（P1 加英文仅改此文件）
   Support/AppSettings.swift    提醒天数、合计主币种（UserDefaults）
   Support/PosterView.swift     9:16 月报海报视图 + ImageRenderer + 相册保存
+  Support/Theme.swift          定稿色与按钮样式（teal/ivory/mint + 主次按钮）
   Services/NotificationScheduler.swift  本地通知调度（补推去重、snooze）
   Services/AppDelegate.swift   通知点击 → 决策页路由
   Views/                       今日 / 清单 / 添加 / 决策 / 取消指南 / 月报 / 设置
@@ -39,6 +40,11 @@ ShouldRenewCore/               SwiftPM 包（纯逻辑，可独立测试）
   Tests/ShouldRenewCoreTests/  23 个 XCTest（核心逻辑）
 ShouldRenewUITests/            XCUITest：添加模板 → 清单点入决策 → 返回仍在
 ```
+
+## 设计
+
+定稿色：底 `#2F5D56`（teal），字 `#F2EBE0`（ivory）；次按钮薄荷底 `#E8F0ED`，按下态 `#244843`，页面底 `#F4F7F6`。
+切图与今日页设计稿见 `design/xuma-assets/`（来源：xuma-assets.zip）。
 
 ## 开发
 

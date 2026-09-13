@@ -20,7 +20,8 @@ struct ShouldRenewApp: App {
                 .environmentObject(store)
                 .environmentObject(notifier)
                 .environmentObject(settings)
-                .tint(Color(red: 0.72, green: 0.42, blue: 0.16))
+                .tint(Xuma.teal)
+                .preferredColorScheme(.light)
                 .task {
                     if Self.isUITest {
                         await notifier.refreshAuthorization()

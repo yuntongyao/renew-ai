@@ -8,7 +8,7 @@ struct PosterView: View {
 
     var body: some View {
         ZStack {
-            Color(red: 0.13, green: 0.09, blue: 0.06)
+            Xuma.teal
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Text(Copy.App.name)
@@ -16,17 +16,17 @@ struct PosterView: View {
                     Spacer()
                     Text(report.monthTitle)
                         .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.7))
+                        .foregroundStyle(Xuma.ivory.opacity(0.75))
                 }
                 Text("AI 会员月报")
                     .font(.system(size: 17))
-                    .foregroundStyle(.white.opacity(0.55))
+                    .foregroundStyle(Xuma.ivory.opacity(0.6))
                     .padding(.top, 4)
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(Copy.Report.chargesLine(report.count))
                         .font(.system(size: 17))
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(Xuma.ivory.opacity(0.65))
                     Text(report.totalText)
                         .font(.system(size: 64, weight: .heavy))
                 }
@@ -45,7 +45,7 @@ struct PosterView: View {
                                 Text(entry.emoji).font(.system(size: 20))
                                 Text(entry.name)
                                     .font(.system(size: 19, weight: .semibold))
-                                    .foregroundStyle(.white)
+                                    .foregroundStyle(Xuma.ivory)
                                 if entry.lowUsage {
                                     Text(Copy.Report.lowUsageTag)
                                         .font(.system(size: 12, weight: .semibold))
@@ -57,7 +57,7 @@ struct PosterView: View {
                                 Spacer()
                                 Text("\(entry.amountText) · \(entry.chargeDayText)")
                                     .font(.system(size: 16))
-                                    .foregroundStyle(.white.opacity(0.65))
+                                    .foregroundStyle(Xuma.ivory.opacity(0.7))
                             }
                         }
                     }
@@ -73,7 +73,7 @@ struct PosterView: View {
                         ForEach(report.reviewEntries) { entry in
                             Text("· \(entry.name)  本月\(usageText(entry.usageMark))")
                                 .font(.system(size: 15))
-                                .foregroundStyle(.white.opacity(0.75))
+                                .foregroundStyle(Xuma.ivory.opacity(0.8))
                         }
                     }
                     .padding(.bottom, 24)
@@ -81,10 +81,10 @@ struct PosterView: View {
 
                 Text(Copy.App.tagline)
                     .font(.system(size: 15))
-                    .foregroundStyle(.white.opacity(0.45))
+                    .foregroundStyle(Xuma.ivory.opacity(0.55))
             }
             .padding(36)
-            .foregroundStyle(.white)
+            .foregroundStyle(Xuma.ivory)
         }
     }
 

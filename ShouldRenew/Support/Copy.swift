@@ -19,13 +19,19 @@ enum Copy {
     enum Today {
         static let title = "今日"
         static let navTitle = Copy.App.name
-        static let monthChargesLabel = "本月将扣"
+        static let monthChargesLabel = "本月已记录"
         static func chargesSummary(_ count: Int) -> String { "\(count) 笔" }
         static func nextChargeDays(_ days: Int) -> String {
-            days <= 0 ? "下一笔今天扣" : "距下一笔扣款 \(days) 天"
+            days <= 0 ? "下一笔今天扣" : "下一笔还有 \(days) 天"
         }
-        static let suggestionBadge = "最近到期"
-        static let goDecide = "去决定"
+        static let suggestionBadge = "该不该续"
+        static func suggestionChargeIn(_ days: Int) -> String {
+            days <= 0 ? "今天扣款" : "\(days) 天后扣款"
+        }
+        static let upcomingHeader = "即将到期"
+        static func upcomingDays(_ days: Int) -> String {
+            days <= 0 ? "今天" : "\(days) 天"
+        }
         static let emptyText = "先把正在扣的 AI 会员加进来，到期我们再问你一声。"
         static let emptyButton = "添加第一个"
     }

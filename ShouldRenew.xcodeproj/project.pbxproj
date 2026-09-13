@@ -23,6 +23,7 @@
 		A10000000000000100000019 /* PosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000019 /* PosterView.swift */; };
 		A10000000000000100000020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000020 /* AppDelegate.swift */; };
 		A10000000000000100000022 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000022 /* Assets.xcassets */; };
+		A10000000000000100000023 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000023 /* Theme.swift */; };
 		A10000000000000100000021 /* ShouldRenewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000021 /* ShouldRenewUITests.swift */; };
 		B00000000000000100000002 /* ShouldRenewUITests.xctest in Products */ = {isa = PBXBuildFile; fileRef = B00000000000000100000002 /* ShouldRenewUITests.xctest */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		B10000000000000100000019 /* PosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterView.swift; sourceTree = "<group>"; };
 		B10000000000000100000020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B10000000000000100000022 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000000000000100000023 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		B10000000000000100000021 /* ShouldRenewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShouldRenewUITests.swift; sourceTree = "<group>"; };
 		B00000000000000100000002 /* ShouldRenewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShouldRenewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -130,6 +132,7 @@
 				B10000000000000100000017 /* Copy.swift */,
 				B10000000000000100000018 /* AppSettings.swift */,
 				B10000000000000100000019 /* PosterView.swift */,
+				B10000000000000100000023 /* Theme.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				A10000000000000100000018 /* AppSettings.swift in Sources */,
 				A10000000000000100000019 /* PosterView.swift in Sources */,
 				A10000000000000100000020 /* AppDelegate.swift in Sources */,
+				A10000000000000100000023 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

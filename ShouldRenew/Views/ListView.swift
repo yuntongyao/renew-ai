@@ -44,7 +44,8 @@ struct ListView: View {
                     listContent
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Xuma.pageBackground)
+            .scrollContentBackground(.hidden)
             .navigationTitle(Copy.List.title)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -128,8 +129,8 @@ struct ListView: View {
             }
             Spacer()
             Text(Copy.List.chargeIn(max(item.daysUntilCharge, 0)))
-                .font(.subheadline.monospacedDigit())
-                .foregroundStyle(item.daysUntilCharge <= 3 ? Color.orange : .secondary)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Xuma.teal)
         }
         .padding(.vertical, 2)
     }

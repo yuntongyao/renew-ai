@@ -97,7 +97,7 @@ public enum CurrencyCode: String, Codable, CaseIterable, Identifiable, Sendable 
 
 // MARK: - 订阅
 
-public struct Subscription: Identifiable, Codable, Equatable, Sendable {
+public struct Subscription: Identifiable, Codable, Equatable, Hashable, Sendable {
     public var id: UUID
     public var name: String
     public var templateKey: String?

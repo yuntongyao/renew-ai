@@ -46,7 +46,7 @@ struct DecisionView: View {
                     LabeledContent(Copy.Decision.channel, value: item.channel.title)
                 }
                 .padding()
-                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+                .background(Color.white, in: RoundedRectangle(cornerRadius: 16))
 
                 usagePicker
 
@@ -57,27 +57,22 @@ struct DecisionView: View {
                         toast = .renewed
                     } label: {
                         Text(Copy.Decision.renew)
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
+                    .buttonStyle(XumaPrimaryButtonStyle())
 
                     Button {
                         sheet = .guide(item)
                     } label: {
                         Text(Copy.Decision.cancelFirst)
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
+                    .buttonStyle(XumaSecondaryButtonStyle())
 
                     Button(Copy.Decision.snooze) {
                         store.markSnoozed(item.id)
                         reschedule()
                         toast = .snoozed
                     }
+                    .font(.subheadline)
                 }
 
                 if let toast {
@@ -89,7 +84,7 @@ struct DecisionView: View {
             }
             .padding()
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Xuma.pageBackground)
         .navigationTitle(Copy.Decision.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -149,7 +144,7 @@ struct DecisionView: View {
             }
         }
         .padding()
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+        .background(Color.white, in: RoundedRectangle(cornerRadius: 16))
     }
 
     /// 分段选择：未标记高亮「暂不记」；大于 5 的手动值不高亮任何段
