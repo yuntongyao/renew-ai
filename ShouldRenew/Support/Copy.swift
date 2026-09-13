@@ -54,9 +54,7 @@ enum Copy {
 
     enum Paywall {
         static let title = "免费可记 \(SubscriptionStore.freeLimit) 个 AI 会员"
-        static let message = "免费额度已用完。解锁后可添加更多 AI 会员，并支持自定义提醒。"
-        static let unlock = "解锁 Pro"
-        static let unlockNote = "内购尚未接入，本期仅作提示。"
+        static let message = "最多可记录 \(SubscriptionStore.freeLimit) 个 AI 会员，已取消的不占用名额。"
         static let close = "知道了"
     }
 
@@ -99,8 +97,9 @@ enum Copy {
         static let sectionPreference = "偏好"
         static let defaultCurrency = "新订阅默认币种"
         static let currencyFooter = "金额按你输入时原样保存；此开关只影响新自定义订阅的默认币种。"
-        static let sectionUnlock = "解锁"
-        static let unlockRow = "免费可记 \(SubscriptionStore.freeLimit) 个 AI 会员"
         static let sectionAbout = "关于"
+        static let versionLabel = "版本"
+        static let permissionDeniedFooter = "通知权限未开启，提醒不会送达。"
+        static let openSystemSettings = "去系统设置开启"
     }
 }

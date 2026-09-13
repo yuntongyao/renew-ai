@@ -32,7 +32,10 @@ struct ShouldRenewApp: App {
                 }
                 .onChange(of: scenePhase) { _, phase in
                     guard phase == .active else { return }
-                    refresh()
+                    Task {
+                        await notifier.refreshAuthorization()
+                        refresh()
+                    }
                 }
         }
     }

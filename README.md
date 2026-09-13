@@ -11,7 +11,7 @@
 - **动作**：续 → decidedRenew（扣款日过后自动滚动周期转回 active），点完可撤销（今日 toast「撤销」/详情页「改回生效中」/清单滑动「改回生效中」）；先取消 → 渠道指南（apple/wechat/alipay/website 各 4 步逐字文案）→「我已取消」或「还是续」；再想 1 天 → snoozed，次日转回（同样可撤销）
 - **清单**：生效中 → 已标记续费 → 已取消（默认折叠）；点按编辑，滑动取消/删除
 - **提醒**：nextChargeAt 前 7/3/1 天 09:30，文案 `{name} {n} 天后扣 {price}，续吗？`，标识符 `renew.{id}.{offset}`，点击进 Today（deep link `shouldrenew://today`）；启动与任意变更后全量重排
-- **设置**：通知开关（开启时请求权限）、新订阅默认币种、解锁占位、关于
+- **设置**：通知开关（开启时请求权限，未授权时引导去系统设置）、新订阅默认币种、关于（含版本号）
 
 明确不做（PRD §0/§11）：月报 Tab、饼图/支出分类/年度预测、金额 Hero、多币种换算、银行/邮件同步、通用订阅目录、用量 API。
 
@@ -49,3 +49,11 @@ xcodebuild test -project ShouldRenew.xcodeproj -scheme ShouldRenew \
 ```
 
 数据仅存本机 `Documents/subscriptions.json`；旧版（v0.1）数据自动迁移（币种/周期/渠道/用途/状态逐项映射，用量与汇率字段按新需求丢弃）。
+
+## 上架配置状态
+
+- `PrivacyInfo.xcprivacy`：无追踪、无收集数据、UserDefaults（CA92.1）
+- `ITSAppUsesNonExemptEncryption = NO`（无网络无自加密）
+- 版本 1.0.0（MARKETING_VERSION 注入，设置页关于显示）；显示名 续吗，仅 iPhone
+- 免费上限 10 条；解锁/IAP 入口已按审核要求移除
+- 仍需在 App Store Connect 侧完成：开发者账号/签名团队、隐私政策 URL、支持 URL、截图（6.9"）、ICP 备案（中国大陆）、商标查重

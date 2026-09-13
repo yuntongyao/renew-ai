@@ -1,18 +1,32 @@
 import SwiftUI
+import UIKit
 import ShouldRenewCore
 
-/// 设置（§5.5）：通知开关 / 默认币种 / 解锁（占位）/ 关于
+/// 设置（§5.5）：通知开关 / 默认币种 / 关于；解锁入口按上架要求移除（免费 10 条）
 struct SettingsView: View {
     @EnvironmentObject private var store: SubscriptionStore
     @EnvironmentObject private var notifier: NotificationScheduler
     @EnvironmentObject private var settings: AppSettings
-    @State private var showPaywall = false
+
+    private var appVersion: String {
+        (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? "1.0.0"
+    }
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
                     Toggle(Copy.Settings.notificationToggle, isOn: $settings.notificationEnabled)
+                    if settings.notificationEnabled && !notifier.authorized {
+                        Text(Copy.Settings.permissionDeniedFooter)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                        Button(Copy.Settings.openSystemSettings) {
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                    }
                 } header: {
                     Text(Copy.Settings.sectionNotification)
                 } footer: {
@@ -29,22 +43,8 @@ struct SettingsView: View {
                     Text(Copy.Settings.currencyFooter)
                 }
 
-                Section(Copy.Settings.sectionUnlock) {
-                    Button {
-                        showPaywall = true
-                    } label: {
-                        HStack {
-                            Text(Copy.Settings.unlockRow)
-                                .foregroundStyle(Xuma.ink)
-                            Spacer()
-                            Text(Copy.Paywall.unlock)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-
                 Section(Copy.Settings.sectionAbout) {
+                    LabeledContent(Copy.Settings.versionLabel, value: appVersion)
                     Text(Copy.App.about)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
@@ -52,35 +52,6 @@ struct SettingsView: View {
             }
             .navigationTitle(Copy.Settings.title)
             .task { await notifier.refreshAuthorization() }
-            .sheet(isPresented: $showPaywall) { PaywallStubSheet() }
         }
-    }
-}
-
-/// 付费占位（§2：stub only，不做 StoreKit；禁用按钮 + 文案）
-struct PaywallStubSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        VStack(spacing: 20) {
-            Text(Copy.Paywall.title)
-                .font(.title2.bold())
-                .foregroundStyle(Xuma.ink)
-            Text(Copy.Paywall.message)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-            Button(Copy.Paywall.unlock) {}
-                .buttonStyle(XumaPrimaryButtonStyle())
-                .disabled(true)
-                .opacity(0.5)
-            Text(Copy.Paywall.unlockNote)
-                .font(.caption)
-                .foregroundStyle(.tertiary)
-            Button(Copy.Paywall.close) { dismiss() }
-                .font(.subheadline)
-        }
-        .padding(24)
-        .presentationDetents([.medium])
     }
 }
