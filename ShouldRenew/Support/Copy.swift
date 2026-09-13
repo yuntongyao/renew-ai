@@ -88,6 +88,7 @@ enum Copy {
         static let swipeCancel = "取消订阅"
         static let swipeReactivate = "改回生效中"
         static let swipeDelete = "删除"
+        static let cancelToast = "已取消订阅"
     }
 
     enum Settings {

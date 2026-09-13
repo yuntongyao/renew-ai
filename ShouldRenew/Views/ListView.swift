@@ -10,6 +10,8 @@ struct ListView: View {
     @State private var editItem: Subscription?
     @State private var showCanceled = false
     @State private var showPaywall = false
+    /// 刚被取消的条目；用于顶部「撤销」提示条
+    @State private var canceledItemID: UUID?
 
     var body: some View {
         NavigationStack {
@@ -26,6 +28,21 @@ struct ListView: View {
             }
             .background(Xuma.pageBackground)
             .scrollContentBackground(.hidden)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if let canceledID = canceledItemID {
+                    HStack(spacing: 12) {
+                        Text(Copy.List.cancelToast)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                        Button(Copy.Today.undo) { restore(canceledID) }
+                            .font(.footnote.weight(.semibold))
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Xuma.soft)
+                }
+            }
             .navigationTitle(Copy.List.title)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -42,6 +59,17 @@ struct ListView: View {
                 Text(Copy.Paywall.message)
             }
         }
+    }
+
+    /// 取消条目恢复为生效中；若会超出免费上限则弹付费占位
+    private func restore(_ id: UUID) {
+        guard store.canAdd else {
+            showPaywall = true
+            return
+        }
+        store.markActive(id)
+        canceledItemID = nil
+        notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
     }
 
     /// 「+」尊重免费上限（§5.4）
@@ -100,7 +128,10 @@ struct ListView: View {
                                 .swipeActions(edge: .trailing) {
                                     Button(Copy.List.swipeDelete, role: .destructive) {
                                         store.remove(item.id)
+                                        if canceledItemID == item.id { canceledItemID = nil }
                                     }
+                                    Button(Copy.List.swipeReactivate) { restore(item.id) }
+                                        .tint(Xuma.teal)
                                 }
                         }
                     }

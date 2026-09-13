@@ -224,6 +224,22 @@ final class ShouldRenewCoreTests: XCTestCase {
         XCTAssertNil(undone.snoozeUntil, "撤销 snooze 应清空 snoozeUntil")
     }
 
+    func testCancelThenRestoreReturnsToActiveAndCap() {
+        let store = makeStore()
+        let sub = item(charge: date(2026, 9, 20))
+        store.add(sub)
+        store.markCanceled(sub.id)
+        XCTAssertEqual(store.item(with: sub.id)?.status, .canceled)
+        XCTAssertNil(store.upcomingDecision(now: date(2026, 9, 13)), "canceled 不进决策卡")
+
+        store.markActive(sub.id)
+        let restored = store.item(with: sub.id)!
+        XCTAssertEqual(restored.status, .active, "误取消后应能恢复为生效中")
+        XCTAssertNil(restored.snoozeUntil)
+        XCTAssertEqual(store.upcomingDecision(now: date(2026, 9, 13))?.id, sub.id, "恢复后重新进决策卡")
+        XCTAssertTrue(store.canAdd)
+    }
+
     func testSnoozeLifecycle() {
         let store = makeStore()
         let sub = item(charge: date(2026, 9, 20))
