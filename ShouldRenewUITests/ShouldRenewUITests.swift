@@ -3,7 +3,7 @@ import XCTest
 /// 关键路径回归（真机流程走查）：
 /// - 反馈 4：选中模板后详情名称自动填充
 /// - 反馈 2：清单点入决策页再返回，记录仍在
-/// - 反馈 3：决策页提供使用次数滑动条
+/// - 反馈 3：决策页提供使用次数分段选择与手动填入
 final class ShouldRenewUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -38,8 +38,14 @@ final class ShouldRenewUITests: XCTestCase {
         let headline = app.staticTexts["「Claude Pro」续吗？"]
         XCTAssertTrue(headline.waitForExistence(timeout: 5), "应进入决策页")
 
-        // 反馈 3：决策页有使用次数滑动条
-        XCTAssertTrue(app.sliders.firstMatch.waitForExistence(timeout: 5), "决策页应有使用次数滑动条")
+        // 反馈 3：决策页有使用次数分段选择与手动填入，手动输入任意正数实时生效
+        let usageSegments = app.segmentedControls.firstMatch
+        XCTAssertTrue(usageSegments.waitForExistence(timeout: 5), "决策页应有使用次数分段选择")
+        let usageField = app.textFields["次数"]
+        XCTAssertTrue(usageField.waitForExistence(timeout: 5), "决策页应可手动填入次数")
+        usageField.tap()
+        usageField.typeText("42")
+        XCTAssertEqual(usageField.value as? String, "42", "手动填入的次数应显示为 42")
 
         app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["Claude Pro"].firstMatch.waitForExistence(timeout: 5),

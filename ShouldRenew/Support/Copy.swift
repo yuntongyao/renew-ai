@@ -68,6 +68,10 @@ enum Copy {
         static let ok = "知道了"
     }
 
+    enum Common {
+        static let done = "完成"
+    }
+
     enum Decision {
         static let title = "决策"
         static func headline(_ name: String) -> String { "「\(name)」续吗？" }
@@ -75,9 +79,11 @@ enum Copy {
         static let nextCharge = "下次扣款"
         static let channel = "扣款渠道"
         static let usage = "本月用过几次（选填）"
-        static func usageTimes(_ count: Int) -> String { "\(count) 次" }
-        static let usageUntouched = "未标记"
-        static let usageClear = "清除标记"
+        static let usageSkip = "暂不记"
+        static let usageNone = "没用过"
+        static let usageCustomLabel = "或手动填入"
+        static let usageCustomPlaceholder = "次数"
+        static let usageUnit = "次"
         static let renew = "续"
         static let cancelFirst = "先取消"
         static let snooze = "再想 1 天"

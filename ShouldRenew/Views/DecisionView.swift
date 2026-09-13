@@ -24,8 +24,9 @@ struct DecisionView: View {
     @State var item: Subscription
     @State private var sheet: Sheet?
     @State private var toast: Toast?
-    /// 拖动中的实时次数；松手才落库，避免拖动期间反复写盘
-    @State private var draggingUsage: Double?
+    /// 手动填入的使用次数文本；0–5 走分段按钮，更大的数走这里
+    @State private var customUsageText = ""
+    @FocusState private var usageFieldFocused: Bool
 
     var body: some View {
         ScrollView {
@@ -95,6 +96,10 @@ struct DecisionView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(Copy.Decision.edit) { sheet = .edit(item) }
             }
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button(Copy.Common.done) { usageFieldFocused = false }
+            }
         }
         .sheet(item: $sheet) { current in
             switch current {
@@ -109,46 +114,69 @@ struct DecisionView: View {
                 item = fresh
             }
         }
+        .onAppear(perform: syncCustomUsageText)
     }
 
-    /// 本月使用次数滑动条（反馈 3）：拖动实时显示次数，上限为模型字段可表示的最大值
+    /// 本月使用次数（选填）：分段快选 0–5，或手动填入任意正数（反馈 3 调整）
     private var usagePicker: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(Copy.Decision.usage)
-                    .font(.subheadline)
-                Spacer()
-                Text(usageDisplay)
-                    .font(.title3.monospacedDigit().weight(.semibold))
-                    .contentTransition(.numericText())
+            Text(Copy.Decision.usage)
+                .font(.subheadline)
+
+            Picker(Copy.Decision.usage, selection: usageSegmentBinding) {
+                Text(Copy.Decision.usageSkip).tag(-1)
+                Text(Copy.Decision.usageNone).tag(0)
+                ForEach(1...5, id: \.self) { Text("\($0)").tag($0) }
             }
-            Slider(
-                value: Binding(
-                    get: { draggingUsage ?? Double(item.usageMark ?? 0) },
-                    set: { draggingUsage = $0 }
-                ),
-                in: 0...Double(Int.max)
-            ) { editing in
-                if !editing {
-                    store.setUsage(item.id, mark: Int((draggingUsage ?? 0).rounded()))
-                    draggingUsage = nil
-                }
-            }
-            if item.usageMark != nil {
-                Button(Copy.Decision.usageClear) {
-                    store.setUsage(item.id, mark: nil)
-                }
-                .font(.footnote)
+            .pickerStyle(.segmented)
+
+            HStack(spacing: 8) {
+                Text(Copy.Decision.usageCustomLabel)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                TextField(Copy.Decision.usageCustomPlaceholder, text: $customUsageText)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.trailing)
+                    .font(.subheadline.monospacedDigit())
+                    .focused($usageFieldFocused)
+                    .frame(maxWidth: 120)
+                    .onChange(of: customUsageText) { _, text in
+                        commitCustomUsage(text)
+                    }
+                Text(Copy.Decision.usageUnit)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding()
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
     }
 
-    private var usageDisplay: String {
-        if draggingUsage == nil && item.usageMark == nil { return Copy.Decision.usageUntouched }
-        let value = Int((draggingUsage ?? Double(item.usageMark ?? 0)).rounded())
-        return Copy.Decision.usageTimes(value)
+    /// 分段选择：未标记高亮「暂不记」；大于 5 的手动值不高亮任何段
+    private var usageSegmentBinding: Binding<Int> {
+        Binding(
+            get: {
+                guard let mark = item.usageMark else { return -1 }
+                return (0...5).contains(mark) ? mark : -2
+            },
+            set: { newValue in
+                usageFieldFocused = false
+                if customUsageText != "" { customUsageText = "" }
+                store.setUsage(item.id, mark: newValue < 0 ? nil : newValue)
+            }
+        )
+    }
+
+    /// 手动输入实时落库；仅接受非负整数，清空不影响已存值
+    private func commitCustomUsage(_ text: String) {
+        guard let value = Int(text), value >= 0 else { return }
+        store.setUsage(item.id, mark: value)
+    }
+
+    private func syncCustomUsageText() {
+        if let mark = item.usageMark, !(0...5).contains(mark) {
+            customUsageText = "\(mark)"
+        }
     }
 
     private func reschedule() {
