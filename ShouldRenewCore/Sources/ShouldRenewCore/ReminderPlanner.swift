@@ -22,7 +22,7 @@ public enum ReminderPlanner {
     public static let bumpDelay: TimeInterval = 120
 
     /// 通知标题：问句，不是账单数字（需求 2.1 / 9）
-    public static let notificationTitle = "该不该续？"
+    public static let notificationTitle = "续吗？"
 
     /// 文案模板：{name} {今天|明天|后天|N天后}扣 {amount}{currency}。这个月你还用吗？
     public static func body(name: String, amountText: String, daysBefore: Int) -> String {

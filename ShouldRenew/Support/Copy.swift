@@ -4,7 +4,7 @@ import ShouldRenewCore
 /// 全部用户可见文案集中于此（需求 8：文案资源抽离，P1 加英文时仅替换本文件）
 enum Copy {
     enum App {
-        static let name = "该不该续"
+        static let name = "续吗"
         static let tagline = "到期前问一句：这笔 AI 会员还该不该续。"
     }
 
@@ -70,7 +70,7 @@ enum Copy {
 
     enum Decision {
         static let title = "决策"
-        static func headline(_ name: String) -> String { "该不该续「\(name)」？" }
+        static func headline(_ name: String) -> String { "「\(name)」续吗？" }
         static let amount = "金额"
         static let nextCharge = "下次扣款"
         static let channel = "扣款渠道"

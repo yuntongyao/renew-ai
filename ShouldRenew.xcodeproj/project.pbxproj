@@ -332,7 +332,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShouldRenew/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "该不该续";
+				INFOPLIST_KEY_CFBundleDisplayName = "续吗";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "保存月报海报到相册需要此权限。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -361,7 +361,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShouldRenew/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "该不该续";
+				INFOPLIST_KEY_CFBundleDisplayName = "续吗";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "保存月报海报到相册需要此权限。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

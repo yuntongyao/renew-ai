@@ -35,7 +35,7 @@ final class ShouldRenewUITests: XCTestCase {
         XCTAssertTrue(row.waitForExistence(timeout: 5), "清单应显示刚添加的订阅")
 
         row.tap()
-        let headline = app.staticTexts["该不该续「Claude Pro」？"]
+        let headline = app.staticTexts["「Claude Pro」续吗？"]
         XCTAssertTrue(headline.waitForExistence(timeout: 5), "应进入决策页")
 
         // 反馈 3：决策页有使用次数滑动条

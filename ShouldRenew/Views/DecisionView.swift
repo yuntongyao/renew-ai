@@ -1,7 +1,7 @@
 import SwiftUI
 import ShouldRenewCore
 
-/// 决策页（需求 6.4）：该不该续「X」？主按钮 续 / 先取消，次按钮 再想 1 天
+/// 决策页（需求 6.4）：「X」续吗？主按钮 续 / 先取消，次按钮 再想 1 天
 struct DecisionView: View {
     enum Toast {
         case renewed, snoozed

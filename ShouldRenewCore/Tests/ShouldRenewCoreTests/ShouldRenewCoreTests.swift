@@ -104,7 +104,7 @@ final class ShouldRenewCoreTests: XCTestCase {
             let comps = cal.dateComponents([.hour, .minute], from: reminder.fireAt)
             XCTAssertEqual(comps.hour, 9)
             XCTAssertEqual(comps.minute, 30)
-            XCTAssertEqual(reminder.title, "该不该续？")
+            XCTAssertEqual(reminder.title, "续吗？")
         }
         let d3 = plan[1].body
         XCTAssertEqual(d3, "Claude Pro 3天后扣 $20。这个月你还用吗？")
@@ -166,7 +166,7 @@ final class ShouldRenewCoreTests: XCTestCase {
             return XCTFail("刚请求的 snooze 应可排程")
         }
         XCTAssertEqual(snooze.fireAt.timeIntervalSince(now), 86_400, accuracy: 60)
-        XCTAssertEqual(snooze.title, "该不该续？")
+        XCTAssertEqual(snooze.title, "续吗？")
     }
 
     func testSnoozeUsesPersistedRequestTimeAndDoesNotReArm() {
