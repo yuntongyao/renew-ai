@@ -1,45 +1,47 @@
 import SwiftUI
 
-/// 定稿色（design/xuma-assets）：底 #2F5D56，字 #F2EBE0
+/// 定稿色（§7 视觉表）：teal #2F5D56 / ivory #F2EBE0 / page #F4F7F6 / soft #E8F0ED / ink #1C2826
 enum Xuma {
-    /// 主色（卡片、主按钮、选中态）
+    /// 主色（标题、主按钮、选中 Tab）
     static let teal = Color(red: 47 / 255, green: 93 / 255, blue: 86 / 255)
     /// 主按钮按下态
     static let tealPressed = Color(red: 36 / 255, green: 72 / 255, blue: 67 / 255)
-    /// 主文字（深底上的字）
+    /// 深底上的文字
     static let ivory = Color(red: 242 / 255, green: 235 / 255, blue: 224 / 255)
-    /// 次按钮底（薄荷）
-    static let mint = Color(red: 232 / 255, green: 240 / 255, blue: 237 / 255)
     /// 页面底色
     static let pageBackground = Color(red: 244 / 255, green: 247 / 255, blue: 246 / 255)
+    /// 次按钮底
+    static let soft = Color(red: 232 / 255, green: 240 / 255, blue: 237 / 255)
+    /// 主要文字
+    static let ink = Color(red: 28 / 255, green: 40 / 255, blue: 38 / 255)
 }
 
-/// 主按钮：teal 底 + ivory 字，按下转深（对应 primary-renew / primary-renew-pressed 切图）
+/// 主按钮：capsule、teal 填充、ivory 文字、高 48–52（§7）
 struct XumaPrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
             .foregroundStyle(Xuma.ivory)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
+            .frame(height: 50)
             .background(
                 configuration.isPressed ? Xuma.tealPressed : Xuma.teal,
-                in: RoundedRectangle(cornerRadius: 14)
+                in: Capsule()
             )
     }
 }
 
-/// 次按钮：薄荷底 + teal 字（对应 secondary-cancel 切图）
+/// 次按钮：soft 底 + teal 文字
 struct XumaSecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
             .foregroundStyle(Xuma.teal)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
+            .frame(height: 50)
             .background(
-                configuration.isPressed ? Xuma.mint.opacity(0.65) : Xuma.mint,
-                in: RoundedRectangle(cornerRadius: 14)
+                configuration.isPressed ? Xuma.soft.opacity(0.65) : Xuma.soft,
+                in: Capsule()
             )
     }
 }

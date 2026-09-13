@@ -1,72 +1,51 @@
 # 续吗 (ShouldRenew)
 
-到期前问一句：这笔 AI 会员还该不该续。依据 `renewornot-requirement.docx`（MVP v0.1）实现的 iOS 轻量 App。
+> 在下次扣款前，决定续不续；要取消就跟着渠道步骤走完。
 
-## 功能（对应需求 P0）
+依据 `xuma-prd-for-ai.md`（v1.1，实现型 PRD，替代原 renewornot-requirement.docx）实现。local-first，无网络、无账号。
 
-- **订阅录入**：预置 24 个 AI 产品模板（本地 JSON，可热更新），自定义添加；名称 / 金额 / 币种（CNY/USD/SGD，默认 CNY）/ 周期（月/季/年/试用）/ 下次扣款日 / 扣款渠道（官网、App Store、Google Play、微信、支付宝、其他）/ 用途标签
-- **今日**：本月将扣合计（混币种按固定汇率粗算主币种）、距下一笔扣款天数、最近到期的一条主建议
-- **清单**：按扣款日排序的卡片（图标 / 价格周期 / 倒计时 / 渠道小标 / 已标次数标签），筛选「全部 / 即将到期 / 试用中 / 已取消待到期」
-- **本地提醒**：到期前 7/3/1 天 9:30（可在设置中增减）；错过上午档且未扣款时当天补推一次；同一订阅同一天只推一条；文案为问句（`Claude Pro 后天扣 ¥144。这个月你还用吗？`）
-- **决策页**：「X」续吗？主按钮「续」（关闭本轮提醒）/「先取消」（打开指南），次按钮「再想 1 天」（snooze，次日再问）；选填「本月用过几次」：0–5 快选，或手动填入任意正数
-- **取消指南**：按渠道 4 步（官网 / Apple / Google Play / 微信扣费服务 / 支付宝免密），可离线阅读，附官方帮助页链接；「我已取消」→ 状态变为「周期结束后停止」，过扣款日自动转「已结束」
-- **月报**：本月笔数、金额、低使用条目、建议复查金额；导出 9:16 海报（保存相册 / 分享）
-- **免费档**：最多 3 条订阅，第 4 条提示 Pro（内购未接入，仅提示）
+## 功能范围（只做决策闭环）
 
-明确不做（需求 5.3）：银行/邮箱连接、账号密码或 API Key、代登录代取消、团队分摊、广告。
+- **添加**：10 个 AI 会员目录（含自定义），名称/价格/币种（usd|cny）/周期（月|年）/渠道（apple|wechat|alipay|website）/下次扣款日/用途；免费上限 3 条（不计已取消），超限弹禁用付费面板（不做 StoreKit）
+- **今日**：决策卡只给 14 天内最近一笔（该不该续 / 价格行 / N 天后扣款 / 续 · 先取消）；无卡显示空态「最近没有要决定的」；「即将到期」最多 3 条；同用途重叠提示「{A} 和 {B} 都偏{X}，要不要只留一个？」
+- **动作**：续 → decidedRenew（扣款日过后自动滚动周期转回 active）；先取消 → 渠道指南（apple/wechat/alipay/website 各 4 步逐字文案）→「我已取消」或「还是续」；再想 1 天 → snoozed，次日转回
+- **清单**：生效中 → 已标记续费 → 已取消（默认折叠）；点按编辑，滑动取消/删除
+- **提醒**：nextChargeAt 前 7/3/1 天 09:30，文案 `{name} {n} 天后扣 {price}，续吗？`，标识符 `renew.{id}.{offset}`，点击进 Today（deep link `shouldrenew://today`）；启动与任意变更后全量重排
+- **设置**：通知开关（开启时请求权限）、新订阅默认币种、解锁占位、关于
+
+明确不做（PRD §0/§11）：月报 Tab、饼图/支出分类/年度预测、金额 Hero、多币种换算、银行/邮件同步、通用订阅目录、用量 API。
 
 ## 结构
 
 ```
-ShouldRenew.xcodeproj          iOS 17+ SwiftUI App（com.shouldrenew.app）
-ShouldRenew/                   App 壳
-  Assets.xcassets              App 图标（定稿：#2F5D56 底「续吗」ivory 字）
-  Support/Copy.swift           全部中文文案集中于此（P1 加英文仅改此文件）
-  Support/AppSettings.swift    提醒天数、合计主币种（UserDefaults）
-  Support/PosterView.swift     9:16 月报海报视图 + ImageRenderer + 相册保存
-  Support/Theme.swift          定稿色与按钮样式（teal/ivory/mint + 主次按钮）
-  Services/NotificationScheduler.swift  本地通知调度（补推去重、snooze）
-  Services/AppDelegate.swift   通知点击 → 决策页路由
-  Views/                       今日 / 清单 / 添加 / 决策 / 取消指南 / 月报 / 设置
-ShouldRenewCore/               SwiftPM 包（纯逻辑，可独立测试）
-  Sources/ShouldRenewCore/
-    Models.swift               Subscription 与枚举（7.1 字段）
-    CatalogStore.swift         预置目录（Resources/catalog.json，24 条）
-    CancelGuide.swift          取消指南（Resources/guides.json）
-    ReminderPlanner.swift      提醒规划（7/3/1、续后静默、snooze、补推、去重键）
-    SubscriptionStore.swift    本地仓库（Documents/subscriptions.json）
-    ExchangeRates.swift        固定汇率粗算（1 USD ≈ 7.2 CNY，1 SGD ≈ 5.3 CNY）
-    MonthReport.swift          月报数据（笔数 / 金额 / 低使用 / 建议复查）
-  Tests/ShouldRenewCoreTests/  23 个 XCTest（核心逻辑）
-ShouldRenewUITests/            XCUITest：添加模板 → 清单点入决策 → 返回仍在
+ShouldRenew.xcodeproj          iOS 17+ SwiftUI（com.shouldrenew.app，显示名 续吗）
+ShouldRenew/
+  Assets.xcassets              定稿图标（teal 底「续吗」ivory 字）
+  Support/Copy.swift           文案库（§10 + 各屏）
+  Support/Theme.swift          视觉令牌：teal/ivory/page/soft/ink + capsule 主次按钮
+  Support/AppSettings.swift    通知开关、新订阅默认币种
+  Services/                    通知调度（deep link）、UNUserNotificationCenterDelegate
+  Views/                       今日（决策卡/空态/即将到期/重叠提示）、决策卡+详情、
+                               取消指南、清单（三分区）、添加（目录+表单）、设置
+ShouldRenewCore/               SwiftPM 包（纯逻辑，swift test 可跑）
+  Models.swift                 §3 数据模型（Subscription/CatalogItem + 枚举）
+  Catalog.swift                10 项目录（id 与 PRD 表格逐项一致）
+  CancelGuide.swift            四渠道四步指南（§5.3 逐字文案）
+  ReminderPlanner.swift        §6 提醒规划（跳过已过期时点）
+  SubscriptionStore.swift      JSON 持久化 + 旧版数据迁移 + 上限/重叠/周期滚动
+  Tests/                       14 个单测（含验收 A2/A3/A5/A6 对应逻辑）
+ShouldRenewUITests/            UI 回归：A1 添加、A7 三 Tab 无月报
+design/xuma-assets/            定稿切图与今日页设计稿
 ```
-
-## 设计
-
-定稿色：底 `#2F5D56`（teal），字 `#F2EBE0`（ivory）；次按钮薄荷底 `#E8F0ED`，按下态 `#244843`，页面底 `#F4F7F6`。
-切图与今日页设计稿见 `design/xuma-assets/`（来源：xuma-assets.zip）。
 
 ## 开发
 
 ```bash
-# 核心逻辑测试（无需模拟器）
-cd ShouldRenewCore && swift test
-
-# App 构建
+cd ShouldRenewCore && swift test          # 核心逻辑
 xcodebuild -project ShouldRenew.xcodeproj -scheme ShouldRenew \
   -destination 'platform=iOS Simulator,name=iPhone 17' build
-
-# 关键路径 UI 回归
 xcodebuild test -project ShouldRenew.xcodeproj -scheme ShouldRenew \
-  -destination 'platform=iOS Simulator,name=iPhone 17'
+  -destination 'platform=iOS Simulator,name=iPhone 17'   # UI 回归
 ```
 
-用 Xcode 打开 `ShouldRenew.xcodeproj`，Cmd+R 运行（真机验证通知需在系统设置中允许通知）。
-
-数据仅存本机 `Documents/subscriptions.json`；旧版本数据（无 emoji/决策字段）可正常解码。UI 测试用 `--uitest-fresh` 启动参数走独立空库，不弹通知权限框。
-
-## 未接入（里程碑 M2/M3）
-
-- StoreKit 内购（Pro 无限条 / 自定义提醒）——免费 3 条已可用
-- 截图 OCR、iCloud / JSON 导出、英文界面（P1）
-- App 图标与上架素材
+数据仅存本机 `Documents/subscriptions.json`；旧版（v0.1）数据自动迁移（币种/周期/渠道/用途/状态逐项映射，用量与汇率字段按新需求丢弃）。

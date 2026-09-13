@@ -1,13 +1,15 @@
 import SwiftUI
 import ShouldRenewCore
 
-/// 今日页（需求 6.1，视觉按 design/xuma-assets/today-page.png 定稿）
+/// 今日页（§5.1）：决策卡 / 空态 / 即将到期 / 重叠提示；不是财务面板
 struct TodayView: View {
     @EnvironmentObject private var store: SubscriptionStore
-    @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var notifier: NotificationScheduler
+    @EnvironmentObject private var settings: AppSettings
     @State private var showAdd = false
-    @State private var decisionItem: Subscription?
+    @State private var detailItem: Subscription?
+    @State private var showGuide = false
+    @State private var guideItem: Subscription?
     @State private var renewedToast = false
 
     var body: some View {
@@ -18,12 +20,38 @@ struct TodayView: View {
                         .font(.largeTitle.bold())
                         .foregroundStyle(Xuma.teal)
 
-                    if let next = store.nextItem {
-                        summaryCard(next)
-                        suggestionCard(next)
-                        upcomingSection
+                    if let decision = store.upcomingDecision() {
+                        DecisionCard(
+                            item: decision,
+                            onRenew: {
+                                store.markRenewed(decision.id)
+                                notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
+                                renewedToast = true
+                            },
+                            onCancel: {
+                                guideItem = decision
+                                showGuide = true
+                            }
+                        )
+                        if renewedToast {
+                            Text(Copy.Today.renewedToast)
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                                .transition(.opacity)
+                        }
                     } else {
                         empty
+                    }
+
+                    upcomingSection
+
+                    if let (a, b, purpose) = store.overlapHint() {
+                        Text(Copy.Today.overlap(a.name, b.name, purpose))
+                            .font(.footnote)
+                            .padding(12)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Xuma.soft, in: RoundedRectangle(cornerRadius: 12))
+                            .foregroundStyle(Xuma.ink)
                     }
                 }
                 .padding(.horizontal)
@@ -31,112 +59,64 @@ struct TodayView: View {
             }
             .background(Xuma.pageBackground)
             .navigationBarHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { showAdd = true } label: { Image(systemName: "plus") }
-                }
-            }
             .sheet(isPresented: $showAdd) { AddSubscriptionView() }
-            .navigationDestination(item: $decisionItem) { target in
-                DecisionView(item: target)
+            .navigationDestination(item: $detailItem) { _ in
+                DecisionDetailView(item: $detailItem)
+            }
+            .navigationDestination(isPresented: $showGuide) {
+                CancelGuideView(item: guideItem ?? placeholder) {
+                    store.markCanceled((guideItem ?? placeholder).id)
+                    notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
+                } onKeep: {
+                    store.markRenewed((guideItem ?? placeholder).id)
+                    notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
+                }
             }
         }
     }
 
-    private var monthCharges: [Subscription] { store.chargesThisMonth() }
-
-    /// 顶部墨绿金额卡
-    private func summaryCard(_ next: Subscription) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(Copy.Today.monthChargesLabel)
-                .font(.subheadline)
-                .foregroundStyle(Xuma.ivory.opacity(0.8))
-            Text(Format.monthTotal(monthCharges, main: settings.mainCurrency))
-                .font(.system(size: 44, weight: .bold, design: .rounded))
-                .foregroundStyle(Xuma.ivory)
-            Text(Copy.Today.nextChargeDays(max(next.daysUntilCharge, 0)))
-                .font(.subheadline)
-                .foregroundStyle(Xuma.ivory.opacity(0.8))
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(24)
-        .background(Xuma.teal, in: RoundedRectangle(cornerRadius: 24))
+    private var placeholder: Subscription {
+        Subscription(catalogId: "custom", name: "", price: 0, currency: .usd, cycle: .monthly, channel: .website, purpose: .other, nextChargeAt: Date())
     }
 
-    /// 主建议卡：该不该续「X」？+ 续 / 先取消 内联按钮
-    private func suggestionCard(_ next: Subscription) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(Copy.Today.suggestionBadge)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(Xuma.teal)
-
-            Text(next.emoji + " " + next.name)
-                .font(.title2.bold())
-                .foregroundStyle(.primary)
-
-            Text("\(next.amountText) · \(next.cycle.title) · \(next.channel.title)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-
-            Text(Copy.Today.suggestionChargeIn(max(next.daysUntilCharge, 0)))
+    /// 空态（§5.1.3）
+    private var empty: some View {
+        VStack(spacing: 16) {
+            Text(Copy.Today.empty)
                 .font(.headline)
-                .foregroundStyle(.primary)
-
-            HStack(spacing: 12) {
-                Button {
-                    store.markRenewed(next.id)
-                    reschedule()
-                    renewedToast = true
-                } label: {
-                    Text(Copy.Decision.renew)
-                }
+                .foregroundStyle(.secondary)
+            Button(Copy.Today.ctaAdd) { showAdd = true }
                 .buttonStyle(XumaPrimaryButtonStyle())
-
-                Button {
-                    decisionItem = next
-                } label: {
-                    Text(Copy.Decision.cancelFirst)
-                }
-                .buttonStyle(XumaSecondaryButtonStyle())
-            }
-            .padding(.top, 4)
-
-            if renewedToast {
-                Text(Copy.Decision.renewedToast)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .transition(.opacity)
-            }
         }
-        .xumaCard()
-        .contentShape(RoundedRectangle(cornerRadius: 20))
-        .onTapGesture { decisionItem = next }
+        .padding(24)
+        .frame(maxWidth: .infinity)
+        .background(Color.white, in: RoundedRectangle(cornerRadius: 20))
     }
 
-    /// 即将到期：除最近一笔外的后续订阅
+    /// 即将到期：决策卡之外最多 3 条（§5.1.4）
     @ViewBuilder
     private var upcomingSection: some View {
-        let upcoming = Array(store.activeSorted.filter { $0.status == .active }.dropFirst().prefix(5))
+        let upcoming = store.upcoming(excluding: store.upcomingDecision()?.id)
         if !upcoming.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 Text(Copy.Today.upcomingHeader)
                     .font(.headline)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Xuma.ink)
                 ForEach(upcoming) { item in
                     Button {
-                        decisionItem = item
+                        detailItem = item
                     } label: {
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(item.emoji + " " + item.name)
+                                Text(item.name)
                                     .font(.headline)
-                                    .foregroundStyle(.primary)
-                                Text(item.amountText)
+                                    .foregroundStyle(Xuma.ink)
+                                Text(item.priceText)
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
                             Spacer()
-                            Text(Copy.Today.upcomingDays(max(item.daysUntilCharge, 0)))
+                            Text(Copy.Today.daysLeft(max(item.daysUntilCharge(), 0)))
                                 .font(.subheadline.weight(.bold))
                                 .foregroundStyle(Xuma.teal)
                         }
@@ -146,24 +126,5 @@ struct TodayView: View {
                 }
             }
         }
-    }
-
-    private var empty: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(Copy.Today.navTitle)
-                .font(.largeTitle.bold())
-                .foregroundStyle(Xuma.teal)
-            VStack(alignment: .leading, spacing: 12) {
-                Text(Copy.Today.emptyText)
-                    .foregroundStyle(.secondary)
-                Button(Copy.Today.emptyButton) { showAdd = true }
-                    .buttonStyle(XumaPrimaryButtonStyle())
-            }
-            .xumaCard()
-        }
-    }
-
-    private func reschedule() {
-        notifier.reschedule(items: store.items, reminderDays: settings.sortedReminderDays)
     }
 }

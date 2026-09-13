@@ -13,17 +13,15 @@
 		A10000000000000100000009 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000009 /* TodayView.swift */; };
 		A10000000000000100000010 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000010 /* ListView.swift */; };
 		A10000000000000100000011 /* AddSubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000011 /* AddSubscriptionView.swift */; };
-		A10000000000000100000012 /* DecisionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000012 /* DecisionView.swift */; };
 		A10000000000000100000013 /* CancelGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000013 /* CancelGuideView.swift */; };
-		A10000000000000100000014 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000014 /* ReportView.swift */; };
 		A10000000000000100000015 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000015 /* SettingsView.swift */; };
 		A10000000000000100000016 /* ShouldRenewCore in Frameworks */ = {isa = PBXBuildFile; productRef = G10000000000000100000001 /* ShouldRenewCore */; };
 		A10000000000000100000017 /* Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000017 /* Copy.swift */; };
 		A10000000000000100000018 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000018 /* AppSettings.swift */; };
-		A10000000000000100000019 /* PosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000019 /* PosterView.swift */; };
 		A10000000000000100000020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000020 /* AppDelegate.swift */; };
 		A10000000000000100000022 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000022 /* Assets.xcassets */; };
 		A10000000000000100000023 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000023 /* Theme.swift */; };
+		A10000000000000100000024 /* DecisionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000024 /* DecisionCard.swift */; };
 		A10000000000000100000021 /* ShouldRenewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000021 /* ShouldRenewUITests.swift */; };
 		B00000000000000100000002 /* ShouldRenewUITests.xctest in Products */ = {isa = PBXBuildFile; fileRef = B00000000000000100000002 /* ShouldRenewUITests.xctest */; };
 /* End PBXBuildFile section */
@@ -36,17 +34,15 @@
 		B10000000000000100000009 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		B10000000000000100000010 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		B10000000000000100000011 /* AddSubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubscriptionView.swift; sourceTree = "<group>"; };
-		B10000000000000100000012 /* DecisionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionView.swift; sourceTree = "<group>"; };
 		B10000000000000100000013 /* CancelGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelGuideView.swift; sourceTree = "<group>"; };
-		B10000000000000100000014 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		B10000000000000100000015 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B10000000000000100000016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10000000000000100000017 /* Copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Copy.swift; sourceTree = "<group>"; };
 		B10000000000000100000018 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		B10000000000000100000019 /* PosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterView.swift; sourceTree = "<group>"; };
 		B10000000000000100000020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B10000000000000100000022 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B10000000000000100000023 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B10000000000000100000024 /* DecisionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionCard.swift; sourceTree = "<group>"; };
 		B10000000000000100000021 /* ShouldRenewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShouldRenewUITests.swift; sourceTree = "<group>"; };
 		B00000000000000100000002 /* ShouldRenewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShouldRenewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -109,10 +105,9 @@
 				B10000000000000100000009 /* TodayView.swift */,
 				B10000000000000100000010 /* ListView.swift */,
 				B10000000000000100000011 /* AddSubscriptionView.swift */,
-				B10000000000000100000012 /* DecisionView.swift */,
 				B10000000000000100000013 /* CancelGuideView.swift */,
-				B10000000000000100000014 /* ReportView.swift */,
 				B10000000000000100000015 /* SettingsView.swift */,
+				B10000000000000100000024 /* DecisionCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -131,7 +126,6 @@
 			children = (
 				B10000000000000100000017 /* Copy.swift */,
 				B10000000000000100000018 /* AppSettings.swift */,
-				B10000000000000100000019 /* PosterView.swift */,
 				B10000000000000100000023 /* Theme.swift */,
 			);
 			path = Support;
@@ -254,15 +248,13 @@
 				A10000000000000100000009 /* TodayView.swift in Sources */,
 				A10000000000000100000010 /* ListView.swift in Sources */,
 				A10000000000000100000011 /* AddSubscriptionView.swift in Sources */,
-				A10000000000000100000012 /* DecisionView.swift in Sources */,
 				A10000000000000100000013 /* CancelGuideView.swift in Sources */,
-				A10000000000000100000014 /* ReportView.swift in Sources */,
 				A10000000000000100000015 /* SettingsView.swift in Sources */,
 				A10000000000000100000017 /* Copy.swift in Sources */,
 				A10000000000000100000018 /* AppSettings.swift in Sources */,
-				A10000000000000100000019 /* PosterView.swift in Sources */,
 				A10000000000000100000020 /* AppDelegate.swift in Sources */,
 				A10000000000000100000023 /* Theme.swift in Sources */,
+				A10000000000000100000024 /* DecisionCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

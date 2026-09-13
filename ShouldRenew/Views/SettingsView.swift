@@ -1,98 +1,86 @@
 import SwiftUI
 import ShouldRenewCore
 
-/// 设置页：通知权限、提醒天数、主币种、数据说明（需求 5.1 提醒可配置 / 8 隐私）
+/// 设置（§5.5）：通知开关 / 默认币种 / 解锁（占位）/ 关于
 struct SettingsView: View {
     @EnvironmentObject private var store: SubscriptionStore
     @EnvironmentObject private var notifier: NotificationScheduler
     @EnvironmentObject private var settings: AppSettings
+    @State private var showPaywall = false
 
     var body: some View {
         NavigationStack {
             List {
-                notificationSection
-                preferenceSection
-                dataSection
-                aboutSection
+                Section {
+                    Toggle(Copy.Settings.notificationToggle, isOn: $settings.notificationEnabled)
+                } header: {
+                    Text(Copy.Settings.sectionNotification)
+                } footer: {
+                    Text(Copy.Settings.notificationFooter)
+                }
+
+                Section {
+                    Picker(Copy.Settings.defaultCurrency, selection: $settings.defaultCurrency) {
+                        ForEach(Currency.allCases) { Text($0.rawValue.uppercased()).tag($0) }
+                    }
+                } header: {
+                    Text(Copy.Settings.sectionPreference)
+                } footer: {
+                    Text(Copy.Settings.currencyFooter)
+                }
+
+                Section(Copy.Settings.sectionUnlock) {
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack {
+                            Text(Copy.Settings.unlockRow)
+                                .foregroundStyle(Xuma.ink)
+                            Spacer()
+                            Text(Copy.Paywall.unlock)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+
+                Section(Copy.Settings.sectionAbout) {
+                    Text(Copy.App.about)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
             .navigationTitle(Copy.Settings.title)
             .task { await notifier.refreshAuthorization() }
-            .onChange(of: settings.reminderDays) { _, _ in
-                notifier.reschedule(items: store.items, reminderDays: settings.sortedReminderDays)
-            }
+            .sheet(isPresented: $showPaywall) { PaywallStubSheet() }
         }
     }
+}
 
-    private var notificationSection: some View {
-        Section {
-            LabeledContent(Copy.Settings.permission, value: notifier.authorized ? Copy.Settings.permissionOn : Copy.Settings.permissionOff)
-            if !notifier.authorized {
-                Button(Copy.Settings.requestPermission) {
-                    Task {
-                        await notifier.requestAuthorization()
-                        notifier.reschedule(items: store.items, reminderDays: settings.sortedReminderDays)
-                    }
-                }
-            }
-            ForEach(AppSettings.availableReminderDays.reversed(), id: \.self) { day in
-                Toggle(Copy.Settings.reminderDay(day), isOn: dayBinding(day))
-            }
-            LabeledContent(Copy.Settings.scheduledCount, value: Copy.Settings.scheduled(notifier.pendingCount))
-            Button(Copy.Settings.reschedule) {
-                notifier.reschedule(items: store.items, reminderDays: settings.sortedReminderDays)
-            }
-        } header: {
-            Text(Copy.Settings.sectionNotification)
-        } footer: {
-            Text(Copy.Settings.reminderDaysFooter)
-        }
-    }
+/// 付费占位（§2：stub only，不做 StoreKit；禁用按钮 + 文案）
+struct PaywallStubSheet: View {
+    @Environment(\.dismiss) private var dismiss
 
-    private func dayBinding(_ day: Int) -> Binding<Bool> {
-        Binding(
-            get: { settings.reminderDays.contains(day) },
-            set: { isOn in
-                if isOn {
-                    settings.reminderDays.insert(day)
-                } else {
-                    settings.reminderDays.remove(day)
-                }
-            }
-        )
-    }
-
-    private var preferenceSection: some View {
-        Section {
-            Picker(Copy.Settings.mainCurrency, selection: $settings.mainCurrency) {
-                ForEach(CurrencyCode.allCases) { Text($0.rawValue).tag($0) }
-            }
-        } header: {
-            Text(Copy.Settings.sectionPreference)
-        } footer: {
-            Text(Copy.Settings.mainCurrencyFooter)
-        }
-    }
-
-    private var dataSection: some View {
-        Section {
-            LabeledContent(Copy.Settings.localItems, value: "\(store.items.count)")
-            Text(Copy.Settings.dataNote)
-                .font(.footnote)
+    var body: some View {
+        VStack(spacing: 20) {
+            Text(Copy.Paywall.title)
+                .font(.title2.bold())
+                .foregroundStyle(Xuma.ink)
+            Text(Copy.Paywall.message)
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
-        } header: {
-            Text(Copy.Settings.sectionData)
+                .multilineTextAlignment(.center)
+            Button(Copy.Paywall.unlock) {}
+                .buttonStyle(XumaPrimaryButtonStyle())
+                .disabled(true)
+                .opacity(0.5)
+            Text(Copy.Paywall.unlockNote)
+                .font(.caption)
+                .foregroundStyle(.tertiary)
+            Button(Copy.Paywall.close) { dismiss() }
+                .font(.subheadline)
         }
-    }
-
-    private var aboutSection: some View {
-        Section(Copy.Settings.sectionAbout) {
-            LabeledContent(Copy.App.name, value: "v0.1.0")
-            Text(Copy.Settings.about)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-            Text(Copy.Settings.disclaimer)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
+        .padding(24)
+        .presentationDetents([.medium])
     }
 }

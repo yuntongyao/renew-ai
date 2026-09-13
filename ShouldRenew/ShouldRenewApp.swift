@@ -37,9 +37,9 @@ struct ShouldRenewApp: App {
         }
     }
 
-    /// 取消待到期的订阅过日即结束；提醒按最新数据重排
-    private func refresh() {
-        store.refreshStatuses()
-        notifier.reschedule(items: store.items, reminderDays: settings.sortedReminderDays)
+    /// 状态生命周期维护 + 全量重排提醒（§6：launch 与任意 mutation 后）
+    func refresh() {
+        store.refresh()
+        notifier.reschedule(items: store.items, enabled: settings.notificationEnabled)
     }
 }

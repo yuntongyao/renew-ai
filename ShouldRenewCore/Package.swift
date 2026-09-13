@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "ShouldRenewCore", targets: ["ShouldRenewCore"])
     ],
     targets: [
-        .target(name: "ShouldRenewCore", resources: [.process("Resources")]),
+        .target(name: "ShouldRenewCore"),
         .testTarget(name: "ShouldRenewCoreTests", dependencies: ["ShouldRenewCore"])
     ]
 )

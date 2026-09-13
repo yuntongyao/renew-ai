@@ -2,8 +2,8 @@ import UIKit
 import UserNotifications
 
 extension Notification.Name {
-    /// 点通知进入决策页（需求 12.1 验收用例 3）
-    static let openDecisionFromNotification = Notification.Name("shouldRenew.openDecision")
+    /// 通知点击 → 打开今日页（deep link shouldrenew://today）
+    static let openTodayFromNotification = Notification.Name("shouldRenew.openToday")
 }
 
 final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -15,7 +15,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         return true
     }
 
-    // 前台时也以横幅展示，方便验收「能收到一条通知」
+    // 前台时也以横幅展示
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -29,11 +29,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        if let idString = response.notification.request.content.userInfo["subscriptionID"] as? String,
-           let id = UUID(uuidString: idString) {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .openDecisionFromNotification, object: id)
-            }
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .openTodayFromNotification, object: nil)
         }
         completionHandler()
     }
