@@ -3,8 +3,13 @@ import ShouldRenewCore
 
 @main
 struct ShouldRenewApp: App {
+    /// UI 测试专用：独立空库 + 不弹通知权限框
+    private static let isUITest = ProcessInfo.processInfo.arguments.contains("--uitest-fresh")
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @StateObject private var store = SubscriptionStore()
+    @StateObject private var store = SubscriptionStore(
+        filename: Self.isUITest ? "uitest-subscriptions.json" : "subscriptions.json"
+    )
     @StateObject private var notifier = NotificationScheduler()
     @StateObject private var settings = AppSettings()
     @Environment(\.scenePhase) private var scenePhase
@@ -17,7 +22,11 @@ struct ShouldRenewApp: App {
                 .environmentObject(settings)
                 .tint(Color(red: 0.72, green: 0.42, blue: 0.16))
                 .task {
-                    await notifier.requestAuthorization()
+                    if Self.isUITest {
+                        await notifier.refreshAuthorization()
+                    } else {
+                        await notifier.requestAuthorization()
+                    }
                     refresh()
                 }
                 .onChange(of: scenePhase) { _, phase in

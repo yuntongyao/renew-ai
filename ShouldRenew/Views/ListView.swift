@@ -24,17 +24,27 @@ struct ListView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
+            VStack(spacing: 0) {
+                // 筛选器放在 List 之外，避免 List 行内分段控件在导航返回后影响列表刷新
+                Picker(Copy.List.title, selection: $filter) {
+                    ForEach(Filter.allCases) { Text($0.title).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+
                 if filtered.isEmpty {
                     ContentUnavailableView(
                         Copy.List.title,
                         systemImage: "tray",
                         description: Text(Copy.List.empty)
                     )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     listContent
                 }
             }
+            .background(Color(.systemGroupedBackground))
             .navigationTitle(Copy.List.title)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -63,13 +73,6 @@ struct ListView: View {
     private var listContent: some View {
         List {
             Section {
-                Picker(Copy.List.title, selection: $filter) {
-                    ForEach(Filter.allCases) { Text($0.title).tag($0) }
-                }
-                .pickerStyle(.segmented)
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets())
-
                 ForEach(filtered) { item in
                     NavigationLink {
                         DecisionView(item: item)

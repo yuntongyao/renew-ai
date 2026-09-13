@@ -75,8 +75,9 @@ enum Copy {
         static let nextCharge = "下次扣款"
         static let channel = "扣款渠道"
         static let usage = "本月用过几次（选填）"
-        static let usageNone = "没用过"
-        static let usageSkip = "暂不记"
+        static func usageTimes(_ count: Int) -> String { "\(count) 次" }
+        static let usageUntouched = "未标记"
+        static let usageClear = "清除标记"
         static let renew = "续"
         static let cancelFirst = "先取消"
         static let snooze = "再想 1 天"

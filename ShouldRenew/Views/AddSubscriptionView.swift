@@ -68,6 +68,13 @@ struct AddSubscriptionView: View {
                         .disabled(draft.name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
+            .onChange(of: pickedKey) { _, key in
+                // 选中模板即带入默认价、周期、渠道、用途（需求 6.3）；编辑模式不重置草稿
+                guard editing == nil,
+                      let key,
+                      let template = sharedCatalog.template(forKey: key) else { return }
+                draft = sharedCatalog.makeDraft(from: template)
+            }
             .onAppear(perform: prefillIfNeeded)
             .alert(Copy.Paywall.title, isPresented: $showPaywall) {
                 Button(Copy.Paywall.ok, role: .cancel) {}

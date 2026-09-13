@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,9 @@
 		A10000000000000100000018 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000018 /* AppSettings.swift */; };
 		A10000000000000100000019 /* PosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000019 /* PosterView.swift */; };
 		A10000000000000100000020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000020 /* AppDelegate.swift */; };
+		A10000000000000100000022 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000022 /* Assets.xcassets */; };
+		A10000000000000100000021 /* ShouldRenewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000100000021 /* ShouldRenewUITests.swift */; };
+		B00000000000000100000002 /* ShouldRenewUITests.xctest in Products */ = {isa = PBXBuildFile; fileRef = B00000000000000100000002 /* ShouldRenewUITests.xctest */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		B10000000000000100000018 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		B10000000000000100000019 /* PosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterView.swift; sourceTree = "<group>"; };
 		B10000000000000100000020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B10000000000000100000022 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000000000000100000021 /* ShouldRenewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShouldRenewUITests.swift; sourceTree = "<group>"; };
+		B00000000000000100000002 /* ShouldRenewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShouldRenewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +65,17 @@
 			isa = PBXGroup;
 			children = (
 				D10000000000000100000002 /* ShouldRenew */,
+				D10000000000000100000008 /* ShouldRenewUITests */,
 				D10000000000000100000006 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		D10000000000000100000008 /* ShouldRenewUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000100000021 /* ShouldRenewUITests.swift */,
+			);
+			path = ShouldRenewUITests;
 			sourceTree = "<group>";
 		};
 		D10000000000000100000002 /* ShouldRenew */ = {
@@ -70,6 +85,7 @@
 				D10000000000000100000007 /* Support */,
 				D10000000000000100000004 /* Services */,
 				D10000000000000100000005 /* Views */,
+				B10000000000000100000022 /* Assets.xcassets */,
 				B10000000000000100000016 /* Info.plist */,
 			);
 			path = ShouldRenew;
@@ -103,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				B00000000000000100000001 /* ShouldRenew.app */,
+				B00000000000000100000002 /* ShouldRenewUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,15 +171,19 @@
 					E10000000000000100000001 = {
 						CreatedOnToolsVersion = 16.0;
 					};
+					E10000000000000100000002 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = E10000000000000100000001;
+					};
 				};
 			};
 			buildConfigurationList = F10000000000000100000001 /* Build configuration list for PBXProject "ShouldRenew" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = "en";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				"en",
+				en,
 				Base,
 			);
 			mainGroup = D10000000000000100000001;
@@ -174,15 +195,46 @@
 			projectRoot = "";
 			targets = (
 				E10000000000000100000001 /* ShouldRenew */,
+				E10000000000000100000002 /* ShouldRenewUITests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXContainerItemProxy section */
+		E40000000000000100000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E00000000000000100000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10000000000000100000001;
+			remoteInfo = ShouldRenew;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXNativeTarget section */
+		E10000000000000100000002 /* ShouldRenewUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F10000000000000100000003 /* Build configuration list for PBXNativeTarget "ShouldRenewUITests" */;
+			buildPhases = (
+				E20000000000000100000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				G20000000000000100000002 /* PBXTargetDependency */,
+			);
+			name = ShouldRenewUITests;
+			productName = ShouldRenewUITests;
+			productReference = B00000000000000100000002 /* ShouldRenewUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E30000000000000100000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000000000000100000022 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +262,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E20000000000000100000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000100000021 /* ShouldRenewUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -217,21 +277,12 @@
 			isa = PBXTargetDependency;
 			productRef = G10000000000000100000001 /* ShouldRenewCore */;
 		};
+		G20000000000000100000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E10000000000000100000001 /* ShouldRenew */;
+			targetProxy = E40000000000000100000001 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		G00000000000000100000001 /* XCLocalSwiftPackageReference "ShouldRenewCore" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ShouldRenewCore;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		G10000000000000100000001 /* ShouldRenewCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ShouldRenewCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F20000000000000100000001 /* Debug */ = {
@@ -277,7 +328,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = X878P6Y5W9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShouldRenew/Info.plist;
@@ -306,7 +357,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = X878P6Y5W9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShouldRenew/Info.plist;
@@ -326,6 +377,52 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		F20000000000000100000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shouldrenew.app.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = ShouldRenew;
+			};
+			name = Debug;
+		};
+		F20000000000000100000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shouldrenew.app.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = ShouldRenew;
 			};
 			name = Release;
 		};
@@ -350,7 +447,30 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		F10000000000000100000003 /* Build configuration list for PBXNativeTarget "ShouldRenewUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F20000000000000100000005 /* Debug */,
+				F20000000000000100000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		G00000000000000100000001 /* XCLocalSwiftPackageReference "ShouldRenewCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ShouldRenewCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		G10000000000000100000001 /* ShouldRenewCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShouldRenewCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E00000000000000100000001 /* Project object */;
 }

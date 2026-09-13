@@ -24,6 +24,8 @@ struct DecisionView: View {
     @State var item: Subscription
     @State private var sheet: Sheet?
     @State private var toast: Toast?
+    /// 拖动中的实时次数；松手才落库，避免拖动期间反复写盘
+    @State private var draggingUsage: Double?
 
     var body: some View {
         ScrollView {
@@ -109,24 +111,44 @@ struct DecisionView: View {
         }
     }
 
+    /// 本月使用次数滑动条（反馈 3）：拖动实时显示次数，上限为模型字段可表示的最大值
     private var usagePicker: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(Copy.Decision.usage)
-                .font(.subheadline)
-            Picker(Copy.Decision.usage, selection: Binding(
-                get: { item.usageMark ?? -1 },
-                set: { newValue in
-                    store.setUsage(item.id, mark: newValue < 0 ? nil : newValue)
-                }
-            )) {
-                Text(Copy.Decision.usageSkip).tag(-1)
-                Text(Copy.Decision.usageNone).tag(0)
-                ForEach(1...5, id: \.self) { Text("\($0)").tag($0) }
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(Copy.Decision.usage)
+                    .font(.subheadline)
+                Spacer()
+                Text(usageDisplay)
+                    .font(.title3.monospacedDigit().weight(.semibold))
+                    .contentTransition(.numericText())
             }
-            .pickerStyle(.segmented)
+            Slider(
+                value: Binding(
+                    get: { draggingUsage ?? Double(item.usageMark ?? 0) },
+                    set: { draggingUsage = $0 }
+                ),
+                in: 0...Double(Int.max)
+            ) { editing in
+                if !editing {
+                    store.setUsage(item.id, mark: Int((draggingUsage ?? 0).rounded()))
+                    draggingUsage = nil
+                }
+            }
+            if item.usageMark != nil {
+                Button(Copy.Decision.usageClear) {
+                    store.setUsage(item.id, mark: nil)
+                }
+                .font(.footnote)
+            }
         }
         .padding()
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    private var usageDisplay: String {
+        if draggingUsage == nil && item.usageMark == nil { return Copy.Decision.usageUntouched }
+        let value = Int((draggingUsage ?? Double(item.usageMark ?? 0)).rounded())
+        return Copy.Decision.usageTimes(value)
     }
 
     private func reschedule() {

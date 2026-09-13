@@ -20,6 +20,7 @@
 ```
 ShouldRenew.xcodeproj          iOS 17+ SwiftUI App（com.shouldrenew.app）
 ShouldRenew/                   App 壳
+  Assets.xcassets              App 图标（1024×1024，暖棕底「续」+ 问号徽标）
   Support/Copy.swift           全部中文文案集中于此（P1 加英文仅改此文件）
   Support/AppSettings.swift    提醒天数、合计主币种（UserDefaults）
   Support/PosterView.swift     9:16 月报海报视图 + ImageRenderer + 相册保存
@@ -35,7 +36,8 @@ ShouldRenewCore/               SwiftPM 包（纯逻辑，可独立测试）
     SubscriptionStore.swift    本地仓库（Documents/subscriptions.json）
     ExchangeRates.swift        固定汇率粗算（1 USD ≈ 7.2 CNY，1 SGD ≈ 5.3 CNY）
     MonthReport.swift          月报数据（笔数 / 金额 / 低使用 / 建议复查）
-  Tests/ShouldRenewCoreTests/  22 个 XCTest
+  Tests/ShouldRenewCoreTests/  23 个 XCTest（核心逻辑）
+ShouldRenewUITests/            XCUITest：添加模板 → 清单点入决策 → 返回仍在
 ```
 
 ## 开发
@@ -47,11 +49,15 @@ cd ShouldRenewCore && swift test
 # App 构建
 xcodebuild -project ShouldRenew.xcodeproj -scheme ShouldRenew \
   -destination 'platform=iOS Simulator,name=iPhone 17' build
+
+# 关键路径 UI 回归
+xcodebuild test -project ShouldRenew.xcodeproj -scheme ShouldRenew \
+  -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
 用 Xcode 打开 `ShouldRenew.xcodeproj`，Cmd+R 运行（真机验证通知需在系统设置中允许通知）。
 
-数据仅存本机 `Documents/subscriptions.json`；旧版本数据（无 emoji/决策字段）可正常解码。
+数据仅存本机 `Documents/subscriptions.json`；旧版本数据（无 emoji/决策字段）可正常解码。UI 测试用 `--uitest-fresh` 启动参数走独立空库，不弹通知权限框。
 
 ## 未接入（里程碑 M2/M3）
 
